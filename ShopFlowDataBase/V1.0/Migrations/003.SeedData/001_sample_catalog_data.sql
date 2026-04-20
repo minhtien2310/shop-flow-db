@@ -25,7 +25,7 @@ SELECT gen_random_uuid(),
        gs,
        'System'
 FROM generate_series(1, 120) AS gs
-ON CONFLICT (slug) DO NOTHING;
+ON CONFLICT (slug) WHERE deleted_at IS NULL DO NOTHING;
 
 UPDATE catalog.category c
 SET parent_id = p.category_id
