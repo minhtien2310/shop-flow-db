@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS catalog.product_image
     url              VARCHAR(1000) NOT NULL,
     alt              VARCHAR(255),
     position         INT           NOT NULL DEFAULT 0,
-    created_at       TIMESTAMPTZ   NOT NULL DEFAULT now()
+    created_by  VARCHAR(100) NOT NULL,
+    created_date  TIMESTAMP  NOT NULL DEFAULT now()
 );
 
 CREATE INDEX IF NOT EXISTS idx_product_image_product_id ON catalog.product_image (product_id);

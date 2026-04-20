@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS platform.idempotency_key
     request_hash       VARCHAR(64)  NOT NULL,
     response_body      TEXT,
     status_code        INT          NOT NULL,
-    created_at         TIMESTAMPTZ  NOT NULL DEFAULT now(),
-    expires_at         TIMESTAMPTZ  NOT NULL,
+    created_date       TIMESTAMP  NOT NULL DEFAULT now(),
+    expires_at         TIMESTAMP  NOT NULL,
     CONSTRAINT uq_idempotency_key_client_key UNIQUE (client_key)
 );
 

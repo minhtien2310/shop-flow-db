@@ -7,9 +7,11 @@ CREATE TABLE IF NOT EXISTS catalog.category
     description TEXT,
     image_url   VARCHAR(500),
     sort_order  INT            NOT NULL DEFAULT 0,
-    created_at  TIMESTAMPTZ  NOT NULL DEFAULT now(),
-    updated_at  TIMESTAMPTZ  NOT NULL DEFAULT now(),
-    deleted_at  TIMESTAMPTZ,
+    created_by  VARCHAR(100) NOT NULL,
+    created_date  TIMESTAMP  NOT NULL DEFAULT now(),
+    updated_by    VARCHAR(100),
+    updated_date  TIMESTAMP,
+    deleted_at  TIMESTAMP,
     CONSTRAINT uq_category_slug UNIQUE (slug)
 );
 

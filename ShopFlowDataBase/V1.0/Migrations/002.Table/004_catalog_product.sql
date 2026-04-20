@@ -9,9 +9,11 @@ CREATE TABLE IF NOT EXISTS catalog.product
     product_status_id      INTEGER NOT NULL,
     attributes  JSONB        NOT NULL DEFAULT '{}'::jsonb,
     version     INT          NOT NULL DEFAULT 0,
-    created_at  TIMESTAMPTZ  NOT NULL DEFAULT now(),
-    updated_at  TIMESTAMPTZ  NOT NULL DEFAULT now(),
-    deleted_at  TIMESTAMPTZ,
+    created_by  VARCHAR(100) NOT NULL,
+    created_date  TIMESTAMP  NOT NULL DEFAULT now(),
+    updated_by    VARCHAR(100),
+    updated_date  TIMESTAMP,
+    deleted_at  TIMESTAMP,
     CONSTRAINT uq_product_slug UNIQUE (slug),
     CONSTRAINT chk_product_version_nonneg CHECK (version >= 0)
 );

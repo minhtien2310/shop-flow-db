@@ -5,8 +5,9 @@ CREATE TABLE IF NOT EXISTS identity."user"
     email         VARCHAR(255) NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     role          VARCHAR(20)  NOT NULL DEFAULT 'ADMIN',
-    created_at    TIMESTAMPTZ  NOT NULL DEFAULT now(),
-    updated_at    TIMESTAMPTZ  NOT NULL DEFAULT now(),
+    created_date    TIMESTAMP  NOT NULL DEFAULT now(),
+    updated_by    VARCHAR(100),
+    updated_date  TIMESTAMP,
     CONSTRAINT uq_user_email UNIQUE (email)
 );
 

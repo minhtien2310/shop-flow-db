@@ -63,6 +63,9 @@
       <None Update="V1.0\Migrations\002.Table\009_platform_idempotency_key.sql">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="V1.0\Migrations\002.Table\011_log_audit_history.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
