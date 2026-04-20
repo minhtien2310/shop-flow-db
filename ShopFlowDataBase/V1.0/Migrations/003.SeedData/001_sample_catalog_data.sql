@@ -134,3 +134,25 @@ SELECT gen_random_uuid(),
        'System'
 FROM generate_series(1, 120) AS gs
          INNER JOIN catalog.product p ON p.slug = 'sf-product-' || lpad(gs::text, 4, '0');
+
+-- -----------------------------------------------------------------------------
+-- 8) identity.user
+-- -----------------------------------------------------------------------------
+INSERT INTO identity."user" (user_id, email, password_hash, role, created_date, updated_by, updated_date)
+VALUES ('b885f42e-9265-4b1f-bb86-8b55498c1f70'::uuid,
+        'admin@gmail.com',
+        chr(36) || '2a' || chr(36) || '11' || chr(36)
+            || '5LMCcawIyU/KiCe1yg.1XOBRu2Mo2QFhhSUNOOCrHRO2cPO/JFuGK',
+        'Admin',
+        '2026-04-20 11:26:32.361937',
+        NULL,
+        NULL),
+       ('29599505-b886-477d-b9e9-db3696210401'::uuid,
+        'user@gmail.com',
+        chr(36) || '2a' || chr(36) || '11' || chr(36)
+            || 'rkHWq8pg9qFH/EGE9mZG/OW91C/ju0ovPR.B2WAB3DizNvWZ0E5Le',
+        'User',
+        '2026-04-20 11:26:42.860227',
+        NULL,
+        NULL)
+ON CONFLICT (email) DO NOTHING;
