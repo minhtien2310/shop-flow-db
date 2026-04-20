@@ -6,7 +6,9 @@ CREATE TABLE IF NOT EXISTS catalog.product_image
     alt              VARCHAR(255),
     position         INT           NOT NULL DEFAULT 0,
     created_by  VARCHAR(100) NOT NULL,
-    created_date  TIMESTAMP  NOT NULL DEFAULT now()
+    created_date  TIMESTAMP  NOT NULL DEFAULT now(),
+    updated_by    VARCHAR(100),
+    updated_date  TIMESTAMP
 );
 
 CREATE INDEX IF NOT EXISTS idx_product_image_product_id ON catalog.product_image (product_id);

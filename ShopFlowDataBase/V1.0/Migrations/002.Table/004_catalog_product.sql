@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS catalog.product
     slug        VARCHAR(500) NOT NULL,
     description TEXT,
     brand       VARCHAR(255),
-    product_status_id      INTEGER NOT NULL,
+    product_status_id      INTEGER NOT NULL REFERENCES catalog.product_status (product_status_id),
     attributes  JSONB        NOT NULL DEFAULT '{}'::jsonb,
     version     INT          NOT NULL DEFAULT 0,
     created_by  VARCHAR(100) NOT NULL,
