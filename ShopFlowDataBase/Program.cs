@@ -1,11 +1,20 @@
 using DbUp;
+using Npgsql;
 
 const int exitFailure = 1;
+
+const string journalSchema = "log";
+const string journalTable = "schema_versions";
 
 var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION");
 var fromVersion = Environment.GetEnvironmentVariable("Version") ?? "V1.0";
 
+if (string.IsNullOrWhiteSpace(connectionString))
+    return exitFailure;
+
 EnsureDatabase.For.PostgresqlDatabase(connectionString);
+// DbUp touches the journal before any .sql script runs; the journal schema must already exist.
+EnsurePostgresqlSchemaExists(connectionString, journalSchema);
 
 var sqlRoot = Path.Combine(AppContext.BaseDirectory, fromVersion, "Migrations");
 
@@ -28,7 +37,7 @@ foreach (var (dir, filePath) in orderedFiles)
         .WithScriptsFromFileSystem(dir, f => string.Equals(
             Path.GetFullPath(f), Path.GetFullPath(filePath),
             StringComparison.OrdinalIgnoreCase))
-        .JournalToPostgresqlTable("public", "schema_versions")
+        .JournalToPostgresqlTable(journalSchema, journalTable)
         .LogToNowhere()
         .Build();
 
@@ -68,6 +77,20 @@ if (failedFiles.Count > 0)
 
 Console.WriteLine("Migration successfully finished.");
 return 0;
+
+static void EnsurePostgresqlSchemaExists(string connectionString, string schemaName)
+{
+    if (string.IsNullOrWhiteSpace(schemaName) ||
+        schemaName.Any(c => !(char.IsAsciiLetterLower(c) || char.IsAsciiDigit(c) || c == '_')))
+        throw new ArgumentException(
+            "Schema name must be non-empty and use only lowercase letters, digits, and underscore.",
+            nameof(schemaName));
+
+    using var connection = new NpgsqlConnection(connectionString);
+    connection.Open();
+    using var cmd = new NpgsqlCommand($"CREATE SCHEMA IF NOT EXISTS {schemaName}", connection);
+    cmd.ExecuteNonQuery();
+}
 
 static List<(string Dir, string FilePath)> CollectSqlFilesInOrder(string migrationsRoot)
 {
